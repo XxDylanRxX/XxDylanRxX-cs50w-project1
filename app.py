@@ -5,7 +5,8 @@ from flask_session import Session
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from dotenv import load_dotenv
+load_dotenv()
 app = Flask(__name__)
 
 # Check for environment variable
@@ -28,35 +29,30 @@ def layout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'GET':
-        return render_template("registro.html")
-    else:
-        username = request.form.get("username")
-        password = request.form.get("password")
-        email = request.form.get("email")
-
-        if not username:
-            return "INGRESE UN USUARIO"
-        if not password:
-            return "INGRESE UNA CONTRASEÑA"
-        if not email:
+    if request.method == 'POST':
+         username = request.form.get("username")
+         password = request.form.get("password")
+         email = request.form.get("email")
+         print(email)
+ 
+         if not username:
+             return "INGRESE UN USUARIO"
+         if not password:
+             return "INGRESE UNA CONTRASEÑA"
+         if not email:
             return "INGRESA NUEVAMENTE LA CONTRASEÑA"
        
 
-        password_hash = generate_password_hash(password)
+         password_hash = generate_password_hash(password)
 
-        try:
-            query = text("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)")
-            user_new = db.execute(query,{"name": username, "email": email, "password": password_hash})
-            db.commit() 
-
-        except:
-            return "Ya estás registrado"
-
-        session["user_id"] = user_new
-
-        return redirect("/login")
-
+         query = text("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)")
+         user_new = db.execute(query,{"name": username, "email": email, "password": password_hash})
+         db.commit()
+         session["user_id"] = user_new
+         return render_template("layout.html")
+    else:
+        return render_template("registro.html")
+       
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     session.clear()
