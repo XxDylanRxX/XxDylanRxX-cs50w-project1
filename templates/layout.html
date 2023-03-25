@@ -22,8 +22,12 @@
           </label>
           <label><a class="logo" href="templates/layout.html">SearchBooks</a> </label>
           {% if session["user_id"] %}
-          <li><a href="/login"> Cerrar Sesión</a></li>
-          <li><a href="/register"> Buscar libro</a></li>
+          <ul>
+            <li><a href="/cerrarSession"> Cerrar Sesión</a></li>
+            <li><a href="/Buscarlibro"> Buscar libro</a></li>
+
+          </ul>
+          
           {% else %}
           <ul>
               <li><a href="/login"> Ingresar </a></li>
@@ -32,7 +36,6 @@
           </ul>
           {% endif %}
       </nav>
-      
       
           {%block main%}
           {%endblock%}

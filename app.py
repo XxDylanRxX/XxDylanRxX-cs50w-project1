@@ -6,7 +6,6 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
-load_dotenv()
 app = Flask(__name__)
 
 # Check for environment variable
@@ -33,7 +32,7 @@ def register():
          username = request.form.get("username")
          password = request.form.get("password")
          email = request.form.get("email")
-         print(email)
+
  
          if not username:
              return "INGRESE UN USUARIO"
@@ -46,9 +45,8 @@ def register():
          password_hash = generate_password_hash(password)
 
          query = text("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)")
-         user_new = db.execute(query,{"name": username, "email": email, "password": password_hash})
+         user = db.execute(query,{"name": username, "email": email, "password": password_hash})
          db.commit()
-         session["user_id"] = user_new
          return render_template("layout.html")
     else:
         return render_template("registro.html")
@@ -66,20 +64,30 @@ def login():
             return "contraseña requerida"
         
        
-        query = text("SELECT * FROM users WHERE name = :username")
+        query = text("SELECT * FROM users WHERE name = :username ")
         resultado = db.execute(query, {"username": username}).fetchall()
         print(resultado)
+        print(resultado[0][3])
         
         
-        if len(resultado) != 1 or not check_password_hash(resultado[0]["password_hash"], request.form.get("password")):
+        if len(resultado) != 1 or not check_password_hash(resultado[0][3], password):
             return "invalido"
     
-        session["user_id"] = resultado[0]["id"]
-        print(session)
-        return redirect("/")
+        else:
+            session['user_id'] = resultado[0]
+            return render_template("layout.html")
     else:
         return render_template("login.html")
 
+@app.route("/cerrarSession")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
