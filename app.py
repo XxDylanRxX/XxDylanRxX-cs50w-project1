@@ -89,6 +89,19 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
+@app.route("/Buscarlibro", methods=['GET', 'POST'] )
+def Buscarlibro():
+     if request.method == 'POST':
+        isbn = request.form.get('isbn')
+
+        query = text("SELECT * FROM books WHERE isbn = :isbn ")
+        resultado = db.execute(query, {"isbn": isbn}).fetchall()
+        print(resultado)
+        return render_template("busqueda.html", resultado = resultado)
+     else:
+        return render_template("busqueda.html")
+        
+        
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
 
