@@ -14,7 +14,7 @@
     <body >
       
 
-      
+
          <nav>
           <input type="checkbox" id="check">
           <label for="check" class="checkbtn">
@@ -28,15 +28,30 @@
           </ul>
           <section>
             <form action="/Buscarlibro" method="POST" >
-                <label for="username">ISBN:</label>
-                <input type="text" id="isbn" name="isbn">
-                <button type="submit">Buscar libro</button>
+                <label for="search">Buscar libro por título, autor o ISBN:</label>
+                <input type="text" name="search" id="search">
+                <button type="submit">Buscar</button>
             </form>
-            {% if resultado is not none %}
-            <p>{{ resultado }}</p>
-        {% else %}
-            <p>No se encontró ningún resultado.</p>
-        {% endif %}
+            <h1>Resultados de búsqueda</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for libro in resultado %}
+                    <tr>
+                        <td><a href="/PaginaLibro/{{ libro.isbn }}">{{ libro.isbn }} </a></td>
+                        <td><a href="">{{ libro.title }} </a></td>
+                        <td><a href="">{{ libro.author }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
       </nav>
       
       </body>

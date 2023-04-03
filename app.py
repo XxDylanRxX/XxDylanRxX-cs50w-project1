@@ -92,16 +92,23 @@ def logout():
 @app.route("/Buscarlibro", methods=['GET', 'POST'] )
 def Buscarlibro():
      if request.method == 'POST':
-        isbn = request.form.get('isbn')
-
-        query = text("SELECT * FROM books WHERE isbn = :isbn ")
-        resultado = db.execute(query, {"isbn": isbn}).fetchall()
-        print(resultado)
-        return render_template("busqueda.html", resultado = resultado)
+        search = request.form['search']
+        if not search:
+            return render_template('error.html')
+        query = text("SELECT * FROM books WHERE author LIKE :search OR title LIKE :search OR isbn LIKE :search")
+        search = f'%{search}%'
+        resultado = db.execute(query, {"search": search})
+        return render_template('busqueda.html', resultado=resultado)
+        
      else:
         return render_template("busqueda.html")
         
-        
+@app.route("/PaginaLibro/<string:libro_isbn>")
+def PaginaLibro(libro_isbn):
+    query = text("SELECT * FROM books WHERE  isbn= :libro_isbn ")
+    resultado = db.execute(query, {"libro_isbn": libro_isbn}).fetchall()
+    print(resultado)
+    return render_template("infolibro.html", resultado = resultado)
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
 
