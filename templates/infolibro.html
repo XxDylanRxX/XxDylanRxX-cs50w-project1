@@ -33,11 +33,11 @@
         <input type="number" min="1" max="5" step="1" id="rating" name="rating">
         <button type="submit">Enviar valoración</button>
       </form>
+      <a href="/apiBooks/{{ info.isbn }}/{{ info.id }}" target="_blank">APIBook</a>
       {% endfor %}
-      <h2>Reseñas</h2>
-      {% for info2 in resultado3 %}
-        <h3>{{info2.reseña}}</h3>
-      {% endfor %}
+      {% block main %}
+      {% endblock %}
+      
 </body>
 
 </html>

@@ -1,0 +1,11 @@
+{% extends "infolibro.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block main %}
+<h2>Reseñas</h2>
+{% for info2 in resultado2 %}
+  <h3>{{info2.reseña}}</h3>
+{% endfor %}
+{% endblock %}
