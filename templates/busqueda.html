@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,22 +11,17 @@
 </head>
     <body >
 
-    </head>
-    <body >
-      
-
-
          <nav>
           <input type="checkbox" id="check">
-          <label for="check" class="checkbtn">
-              <i class="fas fa-bars"></i>
+          <label for="check" class="checkbtn"></i>
           </label>
           <label><a class="logo" href="templates/layout.html">SearchBooks</a> </label>
           <ul>
             <li><a href="/cerrarSession"> Cerrar Sesión</a></li>
             <li><a href="/Buscarlibro"> Buscar libro</a></li>
-
           </ul>
+         </nav>
+
           <section>
             <form action="/Buscarlibro" method="POST" >
                 <label for="search">Buscar libro por título, autor o ISBN:</label>
@@ -45,14 +41,12 @@
                     {% for libro in resultado %}
                     <tr>
                         <td><a href="/PaginaLibro/{{ libro.isbn }}/{{ libro.id }}">{{ libro.isbn }} </a></td>
-                        <td><a href="">{{ libro.title }} </a></td>
-                        <td><a href="">{{ libro.author }}</a></td>
+                        <td>{{ libro.title }}</td>
+                        <td>{{ libro.author }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-
-      </nav>
-      
-      </body>
+      <section>
+ </body>
 </html>

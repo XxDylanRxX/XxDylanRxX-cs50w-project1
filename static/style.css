@@ -17,6 +17,7 @@ html {
 
 body {
   font-family: "Times New Roman", Times, serif;
+  
 }
 
 nav {
@@ -113,4 +114,14 @@ ul li a:hover {
   #check:checked ~ ul {
     left: 0;
   }
+}
+section {
+  margin-top: 200px;
+  float: left;
+  width: 60%;
+  padding-top: 60px;
+  min-height: 500px;
+  margin: 30px 60px 10px 60px;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1rem;
 }
