@@ -187,7 +187,7 @@ def PaginaLibro(libro_isbn, libro_id):
     return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, ratings_count=ratings_count, average_rating=average_rating, descripcion=descripcion, image_url=image_url)
 
 
-@app.route("/apiBooks/<string:libro_isbn>")
+@app.route("/api/<string:libro_isbn>")
 def books_api(libro_isbn):
     if libro_isbn is None:
         return jsonify({"error": "Invalid ISBN"}), 422
