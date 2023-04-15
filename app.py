@@ -153,6 +153,8 @@ def PaginaLibro(libro_isbn, libro_id):
     else:
         ratings_count = None
         average_rating = None
+        descripcion = None
+        image_url = None
 
     if request.method == 'POST':
         reseña = request.form.get('reseña')
