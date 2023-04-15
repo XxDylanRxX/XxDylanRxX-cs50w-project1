@@ -103,16 +103,15 @@ def Buscarlibro():
     if request.method == 'POST':
         search = request.form['search']
         if not search:
-            return render_template('error.html')
+            return 'error.html'
+        search = f'%{search.lower()}%'
         query = text(
-            "SELECT * FROM books WHERE author LIKE :search OR title LIKE :search OR isbn LIKE :search")
-        search = f'%{search}%'
+            "SELECT * FROM books WHERE LOWER(author) LIKE :search OR LOWER(title) LIKE :search OR isbn LIKE :search")
         resultado = db.execute(query, {"search": search})
         return render_template('busqueda.html', resultado=resultado)
 
     else:
         return render_template("busqueda.html")
-
 
 @app.route("/PaginaLibro/<string:libro_isbn>/<string:libro_id>", methods=['GET', 'POST'])
 def PaginaLibro(libro_isbn, libro_id):
