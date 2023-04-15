@@ -69,3 +69,8 @@ DATABASE_URL=  link_de_conexion
 ### 5. Ejecutando la aplicación web en nuestro dominio.
 ##### a vez que hayamos hecho los pasos anteriores solo falta ejecutar nuestro programa en flas para que vizualicemos y acedamos a todas las funciones que hemos programado, para esto ejecuta lo siguiente en la terminal: 
 1. `flask run`.
+
+### 6. 	Consulta a la api.
+##### Para poder acceder a la api que he realizado puede hacerlo por el enlace que dejo en la información delo libro o bien, copiando en lo siguiente:
+`http://127.0.0.1:5000/api/isbn`
+##### Donde isbn es el isbn correspondiente al libro el cual se quiere acceder a su json.
