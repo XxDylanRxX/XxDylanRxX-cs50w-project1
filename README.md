@@ -18,7 +18,7 @@ Web Programming with Python and JavaScript
 
 ### 2. INSTALACIÓN DE LOS REQUERIMIENTOS.
 ##### Una vez dentro del entorno virtual, debemos descargar aquellas requerimiento para que el programa funcione. Para hacer eso ejecuta el siguiente comando:
-4. `pip install requirements.txt`
+4. `pip install -r requirements.txt`
 
 ##### espere unos segundos.
 ### 3. Crear base de datos.
