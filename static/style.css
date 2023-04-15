@@ -17,6 +17,7 @@ html {
 
 body {
   font-family: "Times New Roman", Times, serif;
+  background-image: url("libros-bb.jpg");
   
 }
 
@@ -125,3 +126,61 @@ section {
   font-family: "Ubuntu", sans-serif;
   font-size: 1rem;
 }
+
+body {
+  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"],
+input[type="number"] {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+th {
+  font-size: 16px;
+  font-weight: bold;
+}
+.book-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 300px;
+  height: auto;
+  margin-top: 20px;
+}
+
+
+

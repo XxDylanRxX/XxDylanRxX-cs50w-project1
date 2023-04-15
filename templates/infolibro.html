@@ -17,7 +17,7 @@
     <label for="check" class="checkbtn">
       <i class="fas fa-bars"></i>
     </label>
-    <label><a class="logo" href="templates/layout.html">SearchBooks</a> </label>
+    <label><a class="logo" href="/">SearchBooks</a> </label>
     <ul>
       <li><a href="/cerrarSession"> Cerrar Sesión</a></li>
       <li><a href="/Buscarlibro"> Buscar libro</a></li>
@@ -26,18 +26,22 @@
 
   <section>
     {% for info in resultado %}
-    <p>{{info.title}}</p>
-    <p>{{info.author}}</p>
-    <p>{{info.year}}</p>
+    <h2>{{info.title}}</h2>
+    {% if image_url %}
+    <img src="{{ image_url }}" alt="" class="book-image ">
+    {% endif %}
+    <p> <b>Autor del libro:</b> {{info.author}}</p>
+    <p> <b> Año de publicación:</b> {{info.year}}</p>
+    {% if descripcion %}
+    <p><b> Description:</b>{{ descripcion }}</p>
+    {% endif %}
 
     {% if ratings_count is none or average_rating is none %}
-    <p>Numero de puntuaciones recibidas:no hay información</p>
-    <p>Promedio de puntuaciones del libro:no hay información</p>
-
+    <p> <b>Numero de puntuaciones recibidas:</b> no hay información</p>
+    <p> <b>Promedio de puntuaciones del libro:</b> no hay información</p>
     {% else %}
-    <p>Numero de puntuaciones recibidas:{{ratings_count}}</p>
-    <p>Promedio de puntuaciones del libro:{{average_rating}}</p>
-
+    <p> <b> Numero de puntuaciones recibidas:</b>{{ratings_count}}</p>
+    <p> <b> Promedio de puntuaciones del libro:</b> {{average_rating}}</p>
     {% endif %}
 
     <form action="/PaginaLibro/{{ info.isbn }}/{{ info.id }}" method="post">
@@ -47,24 +51,32 @@
       <input type="number" min="1" max="5" step="1" id="rating" name="rating">
       <button type="submit">Enviar valoración</button>
     </form>
-    <a href="/apiBooks/{{ info.isbn }}" target="_blank">APIBook</a>
+    <h4> Acceder a la api:<a href="/apiBooks/{{ info.isbn }}" target="_blank">APIBook</a></h4>
     {% endfor %}
+
     {% if resultado2 is not none %}
 
-    <h2>Reseñas</h2>
-    {% for info2 in resultado2 %}
-    <h3>{{info2.reseña}}</h3>
-    {% endfor %}
-    
+    <table>
+      <thead>
+          <tr>
+              <th>Nombre de usuario</th>
+              <th>Reseña</th>
+              <th>Fecha de reseña</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for resena in resultado2 %}
+          <tr>
+              <td>{{ resena['name'] }}</td>
+              <td>{{ resena['reseña'] }}</td>
+              <td>{{ resena['fecha_reseña'] }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
     {% endif %}
 
-    {% if resultado3 is not none %}
-    {% for info3 in resultado3 %}
-    <h3>{{info3.reseña}}</h3>
-    {% endfor %}
-
-    {% endif %}
-  </section>
+</section>
 
 
 </body>

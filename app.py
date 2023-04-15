@@ -40,7 +40,7 @@ def register():
         query = text("SELECT * FROM users WHERE name = :username ")
         resultado = db.execute(query, {"username": username}).fetchall()
         if len(resultado) >= 1:
-            return"USUARIO YA EXISTENTE"
+            return "USUARIO YA EXISTENTE"
         if not username:
             return "INGRESE UN USUARIO"
         if not password:
@@ -82,7 +82,7 @@ def login():
 
         else:
             session['user_id'] = resultado[0]
-            return render_template("layout.html")
+            return render_template("busqueda.html")
     else:
         return render_template("login.html")
 
@@ -119,20 +119,39 @@ def PaginaLibro(libro_isbn, libro_id):
     query = text("SELECT * FROM books WHERE  isbn= :libro_isbn ")
     resultado = db.execute(query, {"libro_isbn": libro_isbn}).fetchall()
     id_user = session['user_id'][0]
-    query2 = text("SELECT * FROM reseñas WHERE id_books = :libro_id")
+    # query2 = text("SELECT * FROM reseñas WHERE id_books = :libro_id")
+    # resultado2 = db.execute(query2, {"libro_id": libro_id}).fetchall()
+    query2 = text("""
+    SELECT reseñas.*, users.name
+    FROM reseñas
+    JOIN users ON reseñas.id_user = users.id
+    WHERE reseñas.id_books = :libro_id
+    """)
     resultado2 = db.execute(query2, {"libro_id": libro_id}).fetchall()
 
     isbn = libro_isbn
     response = requests.get(
         "https://www.googleapis.com/books/v1/volumes?q=isbn:"+isbn).json()
-    if 'ratingsCount' in response["items"][0]["volumeInfo"]:
-        ratings_count = response["items"][0]["volumeInfo"]["ratingsCount"]
+    if "items" in response and response["items"]:
+        if "ratingsCount" in response["items"][0]["volumeInfo"]:
+            ratings_count = response["items"][0]["volumeInfo"]["ratingsCount"]
+        else:
+            ratings_count = None
+
+        if "averageRating" in response["items"][0]["volumeInfo"]:
+            average_rating = response["items"][0]["volumeInfo"]["averageRating"]
+        else:
+            average_rating = None
+        if 'description' in response["items"][0]["volumeInfo"]:
+            descripcion = response["items"][0]["volumeInfo"]["description"]
+        else:
+            descripcion = None
+        if 'imageLinks' in response["items"][0]["volumeInfo"]:
+            image_url = response["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"]
+        else:
+            image_url = None
     else:
         ratings_count = None
-
-    if 'averageRating' in response["items"][0]["volumeInfo"]:
-        average_rating = response["items"][0]["volumeInfo"]["averageRating"]
-    else:
         average_rating = None
 
     if request.method == 'POST':
@@ -152,16 +171,20 @@ def PaginaLibro(libro_isbn, libro_id):
             db.execute(query, {"id_books": libro_id, "id_user": id_user, "reseña": reseña,
                                "rating": rating, "fecha_reseña": fecha_reseña})
             db.commit()
-            query2 = text(
-                "SELECT * FROM reseñas WHERE id_books = :libro_id AND id_user = :id_user")
-            resultado3 = db.execute(
-                query2, {"id_user": id_user, "libro_id": libro_id}).fetchall()
+            query2 = text("""
+            SELECT reseñas.*, users.name
+            FROM reseñas
+            JOIN users ON reseñas.id_user = users.id
+            WHERE reseñas.id_books = :libro_id
+            """)
+            resultado2 = db.execute(query2, {"libro_id": libro_id}).fetchall()
+
             print(resultado2)
-            return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, resultado3=resultado3, ratings_count=ratings_count, average_rating=average_rating)
+            return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, ratings_count=ratings_count, average_rating=average_rating, descripcion=descripcion, image_url=image_url)
         else:
             return "Agrega una reseña"
 
-    return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, ratings_count=ratings_count, average_rating=average_rating)
+    return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, ratings_count=ratings_count, average_rating=average_rating, descripcion=descripcion, image_url=image_url)
 
 
 @app.route("/apiBooks/<string:libro_isbn>")
@@ -193,7 +216,7 @@ def books_api(libro_isbn):
         "author": authorbook,
         "year": yearbook,
         "isbn": libro_isbn,
-        "ratings_count" : ratings_count,
+        "ratings_count": ratings_count,
         "average_rating": average_rating
     })
 
