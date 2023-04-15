@@ -160,7 +160,7 @@ def PaginaLibro(libro_isbn, libro_id):
         fecha_reseña = datetime.now()
         id_user = session['user_id'][0]
 
-        if reseña is not None:
+        if  reseña and rating:
             query = text(
                 "SELECT 1 FROM reseñas WHERE id_books = :libro_id AND id_user = :id_user")
             if db.execute(query, {"id_user": id_user, "libro_id": libro_id}).fetchone() is not None:
@@ -182,7 +182,7 @@ def PaginaLibro(libro_isbn, libro_id):
             print(resultado2)
             return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, ratings_count=ratings_count, average_rating=average_rating, descripcion=descripcion, image_url=image_url)
         else:
-            return "Agrega una reseña"
+            return "Agrega una reseña y una puntuación"
 
     return render_template("infolibro.html", resultado=resultado, resultado2=resultado2, ratings_count=ratings_count, average_rating=average_rating, descripcion=descripcion, image_url=image_url)
 
